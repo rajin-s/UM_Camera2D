@@ -31,11 +31,13 @@ namespace UModules
         public Camera Camera { get { return _camera ?? (_camera = GetComponent<Camera>()); } }
 
         /// <summary>
-        /// Is this component attached to the main camera? (Only one main camera can exist)
+        /// Is this component attached to the main camera? (Only one main camera can exist!)
         /// </summary>
         [Header("Properties")]
+        [Tooltip("Only one main camera can exist at a time!")]
+        [Button("Initialize", "Update Main Camera", true)]
         [SerializeField]
-        private bool isMaincamera = true;
+        private bool isMainCamera = true;
         /// <summary>
         /// The height of the camera view rectangle in world units
         /// </summary>
@@ -113,10 +115,9 @@ namespace UModules
         /// </summary>
         public override void Initialize()
         {
-            if (isMaincamera)
+            if (isMainCamera)
             {
-                MainCamera.Camera = Camera;
-                MainCamera.Extension = this;
+                MainCamera.Set(this);
             }
             UpdateProperties();
         }
@@ -150,11 +151,13 @@ namespace UModules
     }
 
     /// <summary>
-    /// Singleton container for main camera setup.static Values set by CameraExtension
+    /// Singleton container for main camera setup
+    /// Values set by CameraExtension
     /// </summary>
-    /// <seealso cref="CameraExtension.isMaincamera" />
+    /// <seealso cref="CameraExtension.isMainCamera" />
     public static class MainCamera
     {
+        private const string mainCameraTag = "MainCamera";
         /// <summary>
         /// Camera component of main camera
         /// </summary>
@@ -163,6 +166,28 @@ namespace UModules
         /// CameraExtension component of main camera
         /// </summary>
         public static CameraExtension Extension { get; internal set; }
+
+        /// <summary>
+        /// Set the main camera based on a given camera object
+        /// </summary>
+        /// <param name="camera">The new main camera</param>
+        public static void Set(Camera camera)
+        {
+            MainCamera.Camera = camera;
+            MainCamera.Extension = camera.GetComponent<CameraExtension>();
+            camera.gameObject.tag = mainCameraTag;
+        }
+
+        /// <summary>
+        /// Set the main camera based on a given camera extension script
+        /// </summary>
+        /// <param name="cameraExtension">The camera extension script attached to the new main camera</param>
+        public static void Set(CameraExtension cameraExtension)
+        {
+            MainCamera.Camera = cameraExtension.Camera;
+            MainCamera.Extension = cameraExtension;
+            cameraExtension.gameObject.tag = mainCameraTag;
+        }
     }
 
     /// <summary>

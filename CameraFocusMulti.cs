@@ -1,3 +1,12 @@
+/*
+    UModules::CameraFocusMulti
+
+    by: Rajin Shankar
+    part of: UM_Camera2D
+
+    available to use according to UM_Camera2D/LICENSE
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
 

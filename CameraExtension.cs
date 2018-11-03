@@ -111,14 +111,20 @@ namespace UModules
         public float Pull { get { return _pull; } set { _pull = value; UpdateProperties(); } }
 
         /// <summary>
-        /// Set initial values and configure main camera references
+        /// Configure main camera references on Awake
         /// </summary>
-        public override void Initialize()
+        private void Awake()
         {
             if (isMainCamera)
             {
                 MainCamera.Set(this);
             }
+        }
+        /// <summary>
+        /// Set initial values on start
+        /// </summary>
+        public override void Initialize()
+        {
             UpdateProperties();
         }
         /// <summary>
@@ -166,17 +172,22 @@ namespace UModules
         /// CameraExtension component of main camera
         /// </summary>
         public static CameraExtension Extension { get; internal set; }
-
         /// <summary>
-        /// Set the main camera based on a given camera object
+        /// CameraFocus component of main camera
         /// </summary>
-        /// <param name="camera">The new main camera</param>
-        public static void Set(Camera camera)
-        {
-            MainCamera.Camera = camera;
-            MainCamera.Extension = camera.GetComponent<CameraExtension>();
-            camera.gameObject.tag = mainCameraTag;
-        }
+        public static CameraFocus Focus { get; internal set; }
+        
+        // /// <summary>
+        // /// Set the main camera based on a given camera object
+        // /// </summary>
+        // /// <param name="camera">The new main camera</param>
+        // public static void Set(Camera camera)
+        // {
+        //     MainCamera.Camera = camera;
+        //     MainCamera.Extension = camera.GetComponent<CameraExtension>();
+        //     MainCamera.Focus = camera.GetComponent<CameraFocus>();
+        //     camera.gameObject.tag = mainCameraTag;
+        // }
 
         /// <summary>
         /// Set the main camera based on a given camera extension script
@@ -186,6 +197,7 @@ namespace UModules
         {
             MainCamera.Camera = cameraExtension.Camera;
             MainCamera.Extension = cameraExtension;
+            MainCamera.Focus = cameraExtension.GetComponent<CameraFocus>();
             cameraExtension.gameObject.tag = mainCameraTag;
         }
     }

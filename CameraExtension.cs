@@ -1,5 +1,7 @@
 /*
     UModules::CameraExtension
+    UModules::MainCamera
+    UModules::CameraExtensionMethods
 
     by: Rajin Shankar
     part of: UM_Camera2D

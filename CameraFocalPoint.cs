@@ -21,27 +21,45 @@ namespace UModules
         /// </summary>
         [Tooltip("Initialized to Main Camera if unset")]
         [SerializeField]
-        private CameraFocus targetCameraFocus;
+        protected CameraFocus targetCameraFocus;
+
+        // [SerializeField]
+        // protected float _initialWeight = 10;
+        // [SerializeField]
+        // protected float _initialSpeed = 1;
+        // [SerializeField]
+        // protected float _initialMaxDistance = 10;
 
         /// <summary>
-        /// Weight of focal point on creation
+        /// Target item info used by target camera focus component. Transform defaults to the attached transform if unset.
+        /// Note: the object is copied every time the focal point is activated.
         /// </summary>
+        [Tooltip("Target transform defaults to this if unset")]
         [SerializeField]
-        private float initialWeight = 10;
+        protected CameraFocus.TargetItem targetInfo;
+
         /// <summary>
-        /// Speed of movement toward focal point on creation
+        /// Public property to access target info weight
         /// </summary>
-        [SerializeField]
-        private float initialSpeed = 10;
+        public float Weight { get { return targetInfo.weight; } }
         /// <summary>
-        /// Max distance to affect camera on creation
+        /// Public property to access target info speed
         /// </summary>
-        [SerializeField]
-        private float initialMaxDistance = 10;
+        public float Speed { get { return targetInfo.speed; } }
+        /// <summary>
+        /// Public property to access target info max distance
+        /// </summary>
+        public float MaxDistance { get { return targetInfo.maxDistance; } }
+
+        /// <summary>
+        /// Is this focal point currently being used by the target camera focus?
+        /// </summary>
+        /// <value></value>
+        public bool IsActive { get; protected set; }
 
         /// <summary>
         /// Initialize targetCameraFocus reference to MainCamera if null. 
-        /// Note: Must happen after CameraExtension Initialize (which sets MainCamera values)
+        /// Note: Must happen after CameraExtension calls Initialize (which sets MainCamera values)
         /// </summary>
         /// <seealso cref="CameraExtension.Initialize" />
         public override void Initialize()
@@ -52,17 +70,19 @@ namespace UModules
         /// <summary>
         /// Add the focal point to the current set of active points when it is enabled
         /// </summary>
-        private void OnEnable()
+        protected void OnEnable()
         {
-            targetCameraFocus.AddTarget(transform, initialWeight, initialSpeed, initialMaxDistance);
+            targetInfo = targetCameraFocus.AddTarget(targetInfo.transform ?? transform, targetInfo.weight, targetInfo.speed, targetInfo.maxDistance);
+            IsActive = true;
         }
 
         /// <summary>
         /// Remove the focal point from the current set of active points when it is disabled or destroyed
         /// </summary>
-        private void OnDisable()
+        protected void OnDisable()
         {
             targetCameraFocus.RemoveTarget(transform);
+            IsActive = false;
         }
     }
 }

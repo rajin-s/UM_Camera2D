@@ -70,7 +70,7 @@ namespace UModules
         /// Target item that is always included in average calculation
         /// </summary>
         [SerializeField]
-        protected TargetItem baseTarget = new TargetItem(null, 100, 8, 0);
+        protected TargetItem baseTarget = new TargetItem(null, 500, 1, 0);
 
         /// <summary>
         /// Set the values of the base target item
@@ -127,6 +127,20 @@ namespace UModules
             int removed = targets.RemoveAll((x) => x.transform == target);
             return removed > 0;
         }
+
+        /// <summary>
+        /// Enum for whether distance calculation should be done relative to the base target (ie a player) or to the camera.
+        /// </summary>
+        protected enum DistanceCalculationMode
+        {
+            RelativeToBaseTarget,
+            RelativeToCamera
+        }
+        /// <summary>
+        /// Should distance calculation be done relative to the base target or to the camera?
+        /// Note: Camera-relative distance calculation can cause motion to get stuck on one focal point.
+        /// </summary>
+        protected DistanceCalculationMode calculationMode = DistanceCalculationMode.RelativeToBaseTarget;
 
         /// <summary>
         /// Structure holding a target focal point and a speed to move toward that point.

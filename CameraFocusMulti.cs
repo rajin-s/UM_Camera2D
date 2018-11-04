@@ -24,9 +24,9 @@ namespace UModules
         /// <returns>A MovementTarget structure containing the target point and speed to move there</returns>
         public override MovementTarget GetMovementTarget()
         {
-            Vector3 referencePosition = transform.position;
+            Vector3 referencePosition = calculationMode == DistanceCalculationMode.RelativeToCamera ? transform.position : baseTarget.transform.position;
 
-            // Start with base values
+            // Start with base values scaled by base weight
             Vector3 finalPoint = baseTarget.transform.position * baseTarget.weight;
             float finalSpeed = baseTarget.speed * baseTarget.weight;
             float totalWeight = baseTarget.weight;

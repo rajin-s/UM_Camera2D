@@ -122,20 +122,14 @@ namespace UModules
         public float Pull { get { return _pull; } set { _pull = value; UpdateProperties(); } }
 
         /// <summary>
-        /// Configure main camera references on Awake
+        /// Configure main camera and set initial values on start
         /// </summary>
-        private void Awake()
+        public override void Initialize()
         {
             if (isMainCamera)
             {
                 MainCamera.Set(this);
             }
-        }
-        /// <summary>
-        /// Set initial values on start
-        /// </summary>
-        public override void Initialize()
-        {
             UpdateProperties();
         }
         /// <summary>
@@ -187,18 +181,10 @@ namespace UModules
         /// CameraFocus component of main camera
         /// </summary>
         public static CameraFocus Focus { get; internal set; }
-        
-        // /// <summary>
-        // /// Set the main camera based on a given camera object
-        // /// </summary>
-        // /// <param name="camera">The new main camera</param>
-        // public static void Set(Camera camera)
-        // {
-        //     MainCamera.Camera = camera;
-        //     MainCamera.Extension = camera.GetComponent<CameraExtension>();
-        //     MainCamera.Focus = camera.GetComponent<CameraFocus>();
-        //     camera.gameObject.tag = mainCameraTag;
-        // }
+        /// <summary>
+        /// CameraArea component of main camera
+        /// </summary>
+        public static CameraArea Area { get; internal set; }
 
         /// <summary>
         /// Set the main camera based on a given camera extension script
@@ -209,12 +195,13 @@ namespace UModules
             MainCamera.Camera = cameraExtension.Camera;
             MainCamera.Extension = cameraExtension;
             MainCamera.Focus = cameraExtension.GetComponent<CameraFocus>();
+            MainCamera.Area = cameraExtension.GetComponent<CameraArea>();
             cameraExtension.gameObject.tag = mainCameraTag;
         }
     }
 
     /// <summary>
-    /// Extension method container for working with basic Camera components
+    /// Extension method container for working with basic Camera components (independent from CameraExtension)
     /// </summary>
     public static class CameraExtensionMethods
     {

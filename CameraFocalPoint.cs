@@ -14,6 +14,7 @@ namespace UModules
     /// <summary>
     /// A single focal point for a 2D camera
     /// </summary>
+    /// <module>UM_Camera2D</module>
     public class CameraFocalPoint : ExtendedBehaviour
     {
         /// <summary>
@@ -41,14 +42,17 @@ namespace UModules
         /// <summary>
         /// Public property to access target info weight
         /// </summary>
+        /// <access>public float</access>
         public float Weight { get { return targetInfo.weight; } }
         /// <summary>
         /// Public property to access target info speed
         /// </summary>
+        /// <access>public float</access>
         public float Speed { get { return targetInfo.speed; } }
         /// <summary>
         /// Public property to access target info max distance
         /// </summary>
+        /// <access>public float</access>
         public float MaxDistance { get { return targetInfo.maxDistance; } }
 
         /// <summary>
@@ -72,7 +76,7 @@ namespace UModules
         /// </summary>
         protected void OnEnable()
         {
-            targetInfo = targetCameraFocus.AddTarget(targetInfo.transform ?? transform, targetInfo.weight, targetInfo.speed, targetInfo.maxDistance);
+            targetInfo = targetCameraFocus.AddTarget(targetInfo.transform == null ? transform : targetInfo.transform, targetInfo.weight, targetInfo.speed, targetInfo.maxDistance);
             IsActive = true;
         }
 

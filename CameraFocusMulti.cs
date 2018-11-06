@@ -16,6 +16,7 @@ namespace UModules
     /// Camera targeting component that takes a weighted average of a set of influences.
     /// Used by the CameraMotion component to provide smooth tracking of multiple targets
     /// </summary>
+    /// <module>UM_Camera2D</module>
     public class CameraFocusMulti : CameraFocus
     {
         /// <summary>

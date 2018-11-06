@@ -17,6 +17,7 @@ namespace UModules
     /// Generic camera targeting component shared by all targeting implementations.
     /// Used by the CameraMotion component to provide following behavior
     /// </summary>
+    /// <module>UM_Camera2D</module>
     public abstract class CameraFocus : ExtendedBehaviour
     {
         /// <summary>

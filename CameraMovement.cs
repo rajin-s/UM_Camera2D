@@ -15,6 +15,7 @@ namespace UModules
     /// Camera movement driver script that uses CameraFocus and CameraArea to control motion
     /// Requires CameraFocus (any subclass) and CameraArea components on the same object
     /// </summary>
+    /// <module>UM_Camera2D</module>
     [RequireComponent(typeof(CameraFocus))]
     public class CameraMovement : ExtendedBehaviour
     {

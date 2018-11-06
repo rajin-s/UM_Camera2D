@@ -19,6 +19,7 @@ namespace UModules
     /// Most properties are only relevant for perspective cameras and won't affect orthographic projecting cameras.
     /// This setup assumes the camera is unrotated.
     /// </summary>
+    /// <module>UM_Camera2D</module>
     [ExecuteInEditMode]
     [RequireComponent(typeof(Camera))]
     public class CameraExtension : ExtendedBehaviour

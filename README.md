@@ -1,9 +1,7 @@
 # UModule 2D Camera
 
-## Contents
-- 2D perspective camera extensions
-- Camera motion behaviors
-- Camera blocking zones
+## Wiki
+- You can find a table of contents, documentation, and examples over on the [wiki!](https://github.com/rajin-s/UM_Camera2D/wiki)
 
 ## Dependencies
 - UM_Basic `https://github.com/rajin-s/UM_Basic.git`

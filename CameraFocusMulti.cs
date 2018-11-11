@@ -20,8 +20,15 @@ namespace UModules
     public class CameraFocusMulti : CameraFocus
     {
         /// <summary>
+        /// Curve to define how much a focal point should affect the camera over its max distance
+        /// </summary>
+        /// <access>protected CurveAsset</access>
+        protected CurveAsset distanceAttenuationCurve;
+        
+        /// <summary>
         /// Get the final movement target based on average of all target items
         /// </summary>
+        /// <access>public override MovementTarget</access>
         /// <returns>A MovementTarget structure containing the target point and speed to move there</returns>
         public override MovementTarget GetMovementTarget()
         {
@@ -29,20 +36,24 @@ namespace UModules
 
             // Start with base values scaled by base weight
             Vector3 finalPoint = baseTarget.transform.position * baseTarget.weight;
+            float finalZoom = baseTarget.zoom * baseTarget.weight;
+            float finalPull = baseTarget.pull * baseTarget.weight;
             float finalSpeed = baseTarget.speed * baseTarget.weight;
             float totalWeight = baseTarget.weight;
 
             // Sum targets based on weight and distance
-            for (int i = 0; i < targets.Count; i++)
+            for (int i = 0; i < activeTargets.Count; i++)
             {
-                TargetItem target = targets[i];
+                TargetItem target = activeTargets[i];
                 Vector3 targetPosition = target.transform.position;
                 if (Vector2.SqrMagnitude(referencePosition - targetPosition) < target.maxDistance * target.maxDistance)
                 {
                     float distance = Vector2.Distance(target.transform.position, referencePosition);
-                    float distanceScale = distanceAttenuationCurveTest.Evaluate(distance / target.maxDistance);
+                    float distanceScale = distanceAttenuationCurve.Evaluate(distance / target.maxDistance);
                     float adjustedWeight = target.weight * distanceScale;
                     finalPoint += target.transform.position * adjustedWeight;
+                    finalZoom += target.zoom * adjustedWeight;
+                    finalPull += target.pull * adjustedWeight;
                     finalSpeed += target.speed * adjustedWeight;
                     totalWeight += adjustedWeight;
                 }
@@ -50,11 +61,12 @@ namespace UModules
 
             // Get final point and speed values based on total weight
             finalPoint /= totalWeight;
+            finalZoom /= totalWeight;
+            finalPull /= totalWeight;
             finalSpeed /= totalWeight;
 
-            return new MovementTarget(finalPoint, finalSpeed);
+            return new MovementTarget(finalPoint, finalZoom, finalPull, finalSpeed);
         }
 
-        public CurveAsset distanceAttenuationCurveTest;
     }
 }

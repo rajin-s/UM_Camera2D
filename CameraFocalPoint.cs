@@ -21,7 +21,7 @@ namespace UModules
         /// <access>protected bool</access>
         [SerializeField]
         protected bool useMainCamera = true;
-        
+
         /// <summary>CameraFocus component to affect (initializes to main camera if null or useMainCamera is true)</summary>
         /// <access>protected CameraFocus</access>
         [DontShowIf("useMainCamera")]
@@ -39,10 +39,12 @@ namespace UModules
 
         /// <summary>Target zoom scale</summary>
         /// <access>public float</access>
+        [Range(0.25f, 4f)]
         public float zoom = 1;
 
         /// <summary>Target pull value</summary>
         /// <access>public float</access>
+        [Range(-1, 1)]
         public float pull = 0;
 
         /// <summary>Target speed scale</summary>

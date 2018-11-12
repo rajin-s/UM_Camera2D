@@ -43,6 +43,7 @@ namespace UModules
         }
 
         /// <summary>Base focal point to use as distance reference</summary>
+        [SerializeField]
         protected CameraFocalPoint baseFocalPoint;
 
         /// <summary>Enum for whether distance calculation should be done relative to the base target (ie a player) or to the camera.</summary>
@@ -75,7 +76,7 @@ namespace UModules
             /// <summary>The zoom value at the target</summary>
             ///<access>public readonly float</access>
             public readonly float zoom;
-            
+
             /// <summary>The pull value at the target</summary>
             ///<access>public readonly< float/access>
             public readonly float pull;

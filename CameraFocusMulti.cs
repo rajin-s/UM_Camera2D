@@ -33,33 +33,33 @@ namespace UModules
         /// <returns>A MovementTarget structure containing the target point and speed to move there</returns>
         public override MovementTarget GetMovementTarget()
         {
-            Vector3 referencePosition = calculationMode == DistanceCalculationMode.RelativeToCamera ? transform.position : baseTarget.transform.position;
+            Vector3 referencePosition = calculationMode == DistanceCalculationMode.RelativeToCamera ? transform.position : baseFocalPoint.transform.position;
 
             // Default values if no influence
             Vector3 finalPoint = transform.position;
             float finalZoom = 1, finalPull = 0, finalSpeed = 1, totalWeight = 0;
 
             // Start with base values scaled by base weight
-            if (baseTarget != null && baseTarget.transform != null)
+            if (baseFocalPoint != null)
             {
-                finalPoint = baseTarget.transform.position * baseTarget.weight;
-                finalZoom = baseTarget.zoom * baseTarget.weight;
-                finalPull = baseTarget.pull * baseTarget.weight;
-                finalSpeed = baseTarget.speed * baseTarget.weight;
-                totalWeight = baseTarget.weight;
+                finalPoint = baseFocalPoint.transform.position * baseFocalPoint.weight;
+                finalZoom = baseFocalPoint.zoom * baseFocalPoint.weight;
+                finalPull = baseFocalPoint.pull * baseFocalPoint.weight;
+                finalSpeed = baseFocalPoint.speed * baseFocalPoint.weight;
+                totalWeight = baseFocalPoint.weight;
             }
             
 
             // Sum targets based on weight and distance
-            for (int i = 0; i < activeTargets.Count; i++)
+            for (int i = 0; i < activeFocalPoints.Count; i++)
             {
-                TargetItem target = activeTargets[i];
+                CameraFocalPoint target = activeFocalPoints[i];
                 Vector3 targetPosition = target.transform.position;
-                if (Vector2.SqrMagnitude(referencePosition - targetPosition) < target.maxDistance * target.maxDistance)
+                if (target.weight > 0 && Vector2.SqrMagnitude(referencePosition - targetPosition) < target.maxDistance * target.maxDistance)
                 {
                     float distance = Vector2.Distance(target.transform.position, referencePosition);
                     float distanceScale = distanceAttenuationCurve.Evaluate(distance / target.maxDistance);
-                    float adjustedWeight = target.weight * distanceScale;
+                    float adjustedWeight = target.weight * target.influenceScale * distanceScale;
                     finalPoint += target.transform.position * adjustedWeight;
                     finalZoom += target.zoom * adjustedWeight;
                     finalPull += target.pull * adjustedWeight;

@@ -35,12 +35,20 @@ namespace UModules
         {
             Vector3 referencePosition = calculationMode == DistanceCalculationMode.RelativeToCamera ? transform.position : baseTarget.transform.position;
 
+            // Default values if no influence
+            Vector3 finalPoint = transform.position;
+            float finalZoom = 1, finalPull = 0, finalSpeed = 1, totalWeight = 0;
+
             // Start with base values scaled by base weight
-            Vector3 finalPoint = baseTarget.transform.position * baseTarget.weight;
-            float finalZoom = baseTarget.zoom * baseTarget.weight;
-            float finalPull = baseTarget.pull * baseTarget.weight;
-            float finalSpeed = baseTarget.speed * baseTarget.weight;
-            float totalWeight = baseTarget.weight;
+            if (baseTarget != null && baseTarget.transform != null)
+            {
+                finalPoint = baseTarget.transform.position * baseTarget.weight;
+                finalZoom = baseTarget.zoom * baseTarget.weight;
+                finalPull = baseTarget.pull * baseTarget.weight;
+                finalSpeed = baseTarget.speed * baseTarget.weight;
+                totalWeight = baseTarget.weight;
+            }
+            
 
             // Sum targets based on weight and distance
             for (int i = 0; i < activeTargets.Count; i++)

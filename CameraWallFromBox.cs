@@ -6,6 +6,7 @@ namespace UModules
     /// A wall that blocks camera motion through the CameraArea and CameraMovement components (always axis-aligned).
     /// Size and position are driven by a BoxCollider2D component.
     /// </summary>
+    /// <module>UM_Camera2D</module>
     [RequireComponent(typeof(BoxCollider2D))]
     public class CameraWallFromBox : CameraWall
     {

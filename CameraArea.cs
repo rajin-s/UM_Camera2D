@@ -7,6 +7,7 @@ namespace UModules
     /// Component to provide 2D collision-like behavior to a camera. 
     /// Requires a CameraExtension component on the same object and CameraWall components in the scene.
     /// </summary>
+    /// <module>UM_Camera2D</module>
     [RequireComponent(typeof(CameraExtension))]
     [DisallowMultipleComponent]
     public class CameraArea : ExtendedBehaviour

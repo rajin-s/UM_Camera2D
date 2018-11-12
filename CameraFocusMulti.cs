@@ -23,6 +23,7 @@ namespace UModules
         /// Curve to define how much a focal point should affect the camera over its max distance
         /// </summary>
         /// <access>protected CurveAsset</access>
+        [SerializeField]
         protected CurveAsset distanceAttenuationCurve;
         
         /// <summary>

@@ -13,7 +13,7 @@ namespace UModules
 {
     /// <summary>
     /// Camera movement driver script that uses CameraFocus and CameraArea to control motion.
-    /// Uses CameraExtension, CameraArea, and CameraFocus components attached to the same object
+    /// Uses CameraExtension, CameraShake, CameraArea, and CameraFocus components attached to the same object
     /// </summary>
     /// <module>UM_Camera2D</module>
     [RequireComponent(typeof(CameraExtension))]
@@ -26,7 +26,7 @@ namespace UModules
         /// </summary>
         /// <access>protected CameraExtension</access>
         protected CameraExtension extension;
-        
+
         /// <summary>
         /// The CameraFocus component to use (can be null).
         /// Always initialized to the component attached to the same object.
@@ -41,6 +41,13 @@ namespace UModules
         /// <access>protected CameraArea</access>
         protected CameraArea area;
 
+        /// <summary>
+        /// The CameraShake component to use (can be null).
+        /// Always initialized to the component attached to the same object.
+        /// </summary>
+        /// <access>protected CameraShake</access>
+        protected CameraShake shake;
+
         /// <summary>Base asymptotic speed for camera panning</summary>
         /// <access>protected float</access>
         [SerializeField]
@@ -51,6 +58,10 @@ namespace UModules
         [SerializeField]
         protected float zoomSpeed = 1;
 
+        /// <summary>Target position to move to, not counting camera shake to keep motion predictable</summary>
+        /// <access>protected Vector2</access>
+        protected Vector2 targetMovePosition;
+
         /// <summary>Get CameraFocus and CameraArea components</summary>
         /// <access>public override void</access>
         public override void Initialize()
@@ -58,6 +69,7 @@ namespace UModules
             extension = GetComponent<CameraExtension>();
             focus = GetComponent<CameraFocus>();
             area = GetComponent<CameraArea>();
+            shake = GetComponent<CameraShake>();
         }
 
         /// <summary>Update the camera's properties through CameraExtension</summary>
@@ -82,13 +94,32 @@ namespace UModules
                 finalPosition += areaOffset;
             }
 
-            Vector2 movePosition = Vector2.Lerp(extension.Pan, finalPosition, Time.deltaTime * finalPanSpeed);
+            targetMovePosition = Vector2.Lerp(targetMovePosition, finalPosition, Time.deltaTime * finalPanSpeed);
             if (!(float.IsNaN(finalZoom) && float.IsNaN(finalPull)))
             {
                 extension.Zoom = Mathf.Lerp(extension.Zoom, finalZoom, Time.deltaTime * finalZoomSpeed);
                 extension.Pull = Mathf.Lerp(extension.Pull, finalPull, Time.deltaTime * finalZoomSpeed);
             }
+
+            Vector2 movePosition = targetMovePosition;
+            if (shake != null)
+            {
+                var shakeResult = shake.GetShake();
+                movePosition += shakeResult.offset;
+                extension.transform.rotation = Quaternion.Euler(Vector3.forward * shakeResult.rotation);
+            }
+
             extension.Pan = movePosition;
+        }
+
+        public Vector2 test;
+        public CameraShake.TraumaMode mode;
+        public void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                shake.AddTrauma(test, mode);
+            }
         }
     }
 }

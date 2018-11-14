@@ -33,7 +33,11 @@ namespace UModules
         /// <returns>A MovementTarget structure containing the target point and speed to move there</returns>
         public override MovementTarget GetMovementTarget()
         {
-            Vector3 referencePosition = calculationMode == DistanceCalculationMode.RelativeToCamera ? transform.position : baseFocalPoint.transform.position;
+            Vector3 referencePosition;
+            if (calculationMode == DistanceCalculationMode.RelativeToBaseTarget && baseFocalPoint != null)
+                referencePosition = baseFocalPoint.transform.position;
+            else
+                referencePosition = transform.position;
 
             // Default values if no influence
             Vector3 finalPoint = transform.position;

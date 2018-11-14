@@ -236,6 +236,11 @@ namespace UModules
         /// </summary>
         /// <access>public static CameraArea</access>
         public static CameraArea Area { get; private set; }
+        /// <summary>
+        /// CameraShake component of main camera
+        /// </summary>
+        /// <access>public static CameraArea</access>
+        public static CameraShake Shake { get; private set; }
 
         /// <summary>
         /// Set the main camera based on a given camera extension script
@@ -248,6 +253,7 @@ namespace UModules
             MainCamera.Extension = cameraExtension;
             MainCamera.Focus = cameraExtension.GetComponent<CameraFocus>();
             MainCamera.Area = cameraExtension.GetComponent<CameraArea>();
+            MainCamera.Shake = cameraExtension.GetComponent<CameraShake>();
             cameraExtension.gameObject.tag = mainCameraTag;
         }
     }

@@ -91,15 +91,7 @@ namespace UModules
         /// <summary>Number of bands to draw when the object is selected, representing falloff over distance</summary>
         /// <access>private const int</access>
         private const int gizmoBandCount = 5;
-        /// <summary>Draw an outline showing the max effect distance</summary>
-        /// <access>protected void</access>
-        protected void OnDrawGizmos()
-        {
-            Color c = gizmoColor;
-            c.a = 0.6f;
-            Gizmos.color = c;
-            Gizmos.DrawWireSphere(transform.position, maxDistance);
-        }
+
         /// <summary>Draw an outline showing the max effect distance and show area with falloff</summary>
         /// <access>protected void</access>
         protected void OnDrawGizmosSelected()
@@ -109,7 +101,7 @@ namespace UModules
             Gizmos.color = c;
             Gizmos.DrawWireSphere(transform.position, maxDistance);
 
-            c.a *= 1f / gizmoBandCount;
+            c.a *= 2f / gizmoBandCount;
             Gizmos.color = c;
             for (int i = 0; i < gizmoBandCount; i++)
             {

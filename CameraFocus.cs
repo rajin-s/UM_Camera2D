@@ -45,6 +45,8 @@ namespace UModules
         /// <summary>Base focal point to use as distance reference</summary>
         [SerializeField]
         protected CameraFocalPoint baseFocalPoint;
+        /// <summary>Public read-only reference to base focal point</summary>
+        public CameraFocalPoint BaseFocalPoint { get { return baseFocalPoint; } }
 
         /// <summary>Enum for whether distance calculation should be done relative to the base target (ie a player) or to the camera.</summary>
         protected enum DistanceCalculationMode

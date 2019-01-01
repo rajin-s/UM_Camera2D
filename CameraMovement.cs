@@ -70,6 +70,12 @@ namespace UModules
             focus = GetComponent<CameraFocus>();
             area = GetComponent<CameraArea>();
             shake = GetComponent<CameraShake>();
+
+            if (focus != null)
+            {
+                extension.Pan = focus.BaseFocalPoint.transform.position;
+                targetMovePosition = extension.Pan;
+            }
         }
 
         /// <summary>Update the camera's properties through CameraExtension</summary>
@@ -111,15 +117,14 @@ namespace UModules
 
             extension.Pan = movePosition;
         }
-
-        public Vector2 test;
-        public CameraShake.TraumaMode mode;
-        public void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                shake.AddTrauma(test, mode);
-            }
-        }
+        // public Vector2 test;
+        // public CameraShake.TraumaMode mode;
+        // public void Update()
+        // {
+        //     if (Input.GetKeyDown(KeyCode.T))
+        //     {
+        //         shake.AddTrauma(test, mode);
+        //     }
+        // }
     }
 }

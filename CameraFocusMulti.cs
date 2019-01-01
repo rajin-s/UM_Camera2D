@@ -52,7 +52,6 @@ namespace UModules
                 finalSpeed = baseFocalPoint.speed * baseFocalPoint.weight;
                 totalWeight = baseFocalPoint.weight;
             }
-            
 
             // Sum targets based on weight and distance
             for (int i = 0; i < activeFocalPoints.Count; i++)
